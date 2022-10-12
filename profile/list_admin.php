@@ -20,34 +20,35 @@ if(isset($_GET['delete_Admin']))
 ?>
 
 <table class="table table-dark">
-<thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">Profile</th>
-        <th scope="col">Name</th>
-        <th scope="col">age</th>
-        <th scope="col">Address</th>
-        <th scope="col">Phone</th>
-        <th scope="col">Email</th>
-        <th scope="col">Password</th>
-        <th scope="col">Action</th>
-    </tr>
-</thead>
-<tbody>
-    <?php foreach ($successGetData as $get_data) { ?>
-    <tr>
-        <th scope="row"><?= "$get_data[id]" ?></th>
-        <td><img src="<?= "$get_data[image]" ?> " width="45" ></td>
-        <td><?= "$get_data[name]" ?></td>
-        <td><?= "$get_data[age]" ?></td>
-        <td><?= "$get_data[address]" ?></td>
-        <td><?= "$get_data[phone]" ?></td>
-        <td><?= "$get_data[email]" ?></td>
-        <td><?= "$get_data[password]" ?></td>
-        <td><a href="list_admin.php?delete_Admin=<?= "$get_data[id]" ?>" class="btn btn-danger">Delete</a></td>
-    </tr>
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Profile</th>
+            <th scope="col">Name</th>
+            <th scope="col">age</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($successGetData as $get_data) { ?>
+        <tr>
+            <th scope="row"><?= "$get_data[id]" ?></th>
+            <td><img src="<?=" $get_data[image]"?> " width=" 45"></td>
+            <td><?= "$get_data[name]" ?></td>
+            <td><?= "$get_data[age]" ?></td>
+            <td><?= "$get_data[address]" ?></td>
+            <td><?= "$get_data[phone]" ?></td>
+            <td><?= "$get_data[email]" ?></td>
+            <td><?= "$get_data[password]" ?></td>
+            <td><a href="list_admin.php?delete_Admin=<?= "$get_data[id]" ?>" class="btn btn-danger">Delete</a></td>
+        </tr>
         <?php } ?>
-</tbody>
+    </tbody>
 </table>
 
 <?php include "../shared/footer.php" ?>

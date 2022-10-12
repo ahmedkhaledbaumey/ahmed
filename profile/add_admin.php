@@ -20,9 +20,9 @@ $addData = "INSERT INTO `admin` VALUES (null,'$name','$age','$address','$phone',
 else {
     $img_name = time() . $_FILES['image']['name'];
     $img_temp = $_FILES['image']['tmp_name'];
-    $location = "./upload/$img_name";
+    $location = "./uploads/$img_name";
     move_uploaded_file($img_temp, $location);
-    $addData = "INSERT INTO `admin` VALUES (null,'$name','$age','$address','$phone','$email','$password', 'law_office/employee/upload/$img_name',1)";
+    $addData = "INSERT INTO `admin` VALUES (null,'$name','$age','$address','$phone','$email','$password', '$location',1)";
 };
 
 $successInsert = mysqli_query($connection, $addData);
@@ -32,56 +32,56 @@ go("/profile/list_admin.php");
 
 ?>
 
- 
- 
- <div class="container col-6">
-        <div class="card ">
-            <div class="card-body">
-                <form method="POST"  enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for=""> Name </label>
-                        <input type="text" name="name" class="form-control">
-                    </div> 
-                    <hr>  
-               
-                    <div class="form-group">
-                        <label for="">age </label>
-                        <input type="text" name="age" class="form-control">
-                    </div> 
-                    <hr>  
-                
-                    <div class="form-group">
-                        <label for=""> address </label>
-                        <input type="text" name="address" class="form-control">
-                    </div> 
-                    <hr>  
-                
-                    <div class="form-group">
-                        <label for=""> phone </label>
-                        <input type="text" name="phone" class="form-control">
-                    </div> 
-                    <hr>  
-             
-                    <div class="form-group">
-                        <label for=""> email </label>
-                        <input type="text" name="email" class="form-control">
-                    </div> 
-                    <hr>  
-                
-                    <div class="form-group">
-                        <label for=""> password </label>
-                        <input type="text" name="password" class="form-control">
-                    </div> 
-                    <hr>   
-                    <div>
-                    <label for="exampleInputPassword1">Image</label>
-                     <input type="file" name="image"> 
-                     </div>
-                    <hr>   
 
-                
-                    
-                    <button type="submit" class="btn btn-primary" name="insert">Submit</button>
-                  
-        </table>   
-    <?php include "../shared/footer.php" ?>
+
+<div class="container col-6">
+    <div class="card ">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for=""> Name </label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for="">age </label>
+                    <input type="text" name="age" class="form-control">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""> address </label>
+                    <input type="text" name="address" class="form-control">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""> phone </label>
+                    <input type="text" name="phone" class="form-control">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""> email </label>
+                    <input type="text" name="email" class="form-control">
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label for=""> password </label>
+                    <input type="text" name="password" class="form-control">
+                </div>
+                <hr>
+                <div>
+                    <label for="exampleInputPassword1">Image</label>
+                    <input type="file" name="image">
+                </div>
+                <hr>
+
+
+
+                <button type="submit" class="btn btn-primary" name="insert">Submit</button>
+
+                </table>
+                <?php include "../shared/footer.php" ?>

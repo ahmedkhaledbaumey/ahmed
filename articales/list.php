@@ -19,11 +19,12 @@ if (isset($_GET['delete_post']))
 ?>
 <?php foreach($successGetData as $data){ ?>
 <div class="card" style="width: 18rem;">
-      <img src="<?= $data['image_profile'] ?>" class="rounded" width="40">
-      <h3><?= $data['auther'] ?></h3>
-    
+
+
+    <h3><?= $data['auther'] ?></h3>
+
     <hr>
-    <img width="300" src="/law_office/articales/uploads/<?= $data['image'] ?>" class="card-img-top" >
+    <img width="300" src="<?= $data['image'] ?>" class="card-img-top">
     <div class="card-body">
         <h5 class="card-title"><?= $data['title'] ?> </h5>
         <p class="card-title"> <?= $data['description'] ?> </p>

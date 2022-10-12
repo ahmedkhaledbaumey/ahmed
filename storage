@@ -1,0 +1,213 @@
+<?php
+include "../shared/header.php";
+include "../shared/nav.php";
+include "../general/env.php";
+include "../general/function.php";
+NotAuth();
+
+
+if (!empty($_SESSION['emailLawyer'])){
+    $myEmail =  $_SESSION['emailLawyer'];
+    $getData = "SELECT * FROM `lawyers` WHERE `email` = '$myEmail'";
+    $successGetData = mysqli_query($connection,$getData);
+    $row = mysqli_fetch_row($successGetData);
+    $auther = $row[1];
+    $imageProfile = $row[9];
+  }else {
+    $myEmail =  $_SESSION['emailAdmin'];
+    $getData = "SELECT * FROM `admin` WHERE `email` = '$myEmail'";
+    $successGetData = mysqli_query($connection,$getData);
+    $row = mysqli_fetch_row($successGetData);
+    $auther = $row[1];
+    $imageProfile = $row[7];  
+   
+
+}
+
+
+if (isset($_POST['insert']))
+{
+$title = $_POST['title'];
+$description = $_POST['description'];
+
+
+$img_name = time() . $_FILES['image']['name'];
+$img_temp = $_FILES['image']['tmp_name'];
+$location = "./uploads/";
+
+move_uploaded_file($img_temp, $location . $img_name);
+$addData = "INSERT INTO `articales`
+VALUES(null,'$title','$description','$auther','$img_name',default,default,'$imageProfile')";
+$aq=mysqli_query($connection,$addData);
+
+
+
+
+
+go("/articales/list.php");
+}
+?>
+<div class="container col-6">
+    <div class="card ">
+        <div class="card-body">
+            <div>
+                <div>
+                    <div>
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group ">
+                                <label for="exampleInputEmail1">Title</label>
+                                <input type="text" class="form-control" name="title" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleInputEmail1">Description</label>
+                                <textarea id="exampleInputEmail1" class="form-control" name="description"
+                                    rows="6"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Image</label>
+                                <input type="file" name="image">
+                            </div>
+
+                            <button type="submit" name="insert" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <?php include "../shared/footer.php" ?>
+
+
+
+
+
+
+
+
+
+
+    <?php
+include '../shared/header.php';
+include "../shared/nav.php";
+include "../general/env.php";
+include "../general/function.php";
+NotAuth();  
+$myEmail =  $_SESSION['emailAdmin'];
+$getData = "SELECT * FROM `admin` WHERE `email` = '$myEmail'";
+$successGetData = mysqli_query($connection,$getData);
+$row = mysqli_fetch_row($successGetData);
+
+
+$getData = "SELECT * FROM `articales`";
+$successGetData = mysqli_query($connection,$getData);
+
+if (isset($_GET['delete_post'])) 
+{
+  $id = $_GET['delete_post'];
+  $delete = "DELETE FROM `articales` WHERE `id` = $id";
+  $doneDelete = mysqli_query($connection, $delete);
+  header("location:  /law_office/articales/list.php ");
+}
+
+?>
+    <?php foreach($successGetData as $data){ ?>
+    <div class="card" style="width: 18rem;">
+        <img src="/law_office/articales/uploads/<?= $row['7'] ?>" class="rounded" width="40">
+
+        <h3><?= $data['auther'] ?></h3>
+
+        <hr>
+        <img width="300" src="/law_office/articales/uploads/<?= $data['image'] ?>" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title"><?= $data['title'] ?> </h5>
+            <p class="card-title"> <?= $data['description'] ?> </p>
+            <a href="/law_office/articales/update.php?edit_post=<?= $data['id'] ?>" class="btn btn-primary">Edit</a>
+            <a href="/law_office/articales/list.php?delete_post=<?= $data['id'] ?>" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+    <br> <br> <br>
+    <?php } ?>
+    <?php include "../shared/footer.php" ?>
+    <!-- CREATE VIEW admin_articales0 AS select `law`.`articales`.`id` AS `id`,`law`.`articales`.`title` AS
+`title`,`law`.`articales`.`description` AS `description`, `law`.`articales`.`image` AS `image` , `law`.`admin`.`image`
+AS `image_profile` , `law`.`admin`.`name` AS `auther` from (`law`.`articales` join `law`.`admin`
+on(`law`.`articales`.`admin_id` = `law`.`admin`.`id`)); -->
+
+
+
+
+
+    <?php
+include '../shared/header.php';
+include "../shared/nav.php";
+include "../general/env.php";
+include "../general/function.php";
+NotAuth();
+
+$id = $_GET['edit_post'];
+$getoneRow = "SELECT * FROM `articales` WHERE `id` = $id";
+$oneRow = mysqli_query($connection, $getoneRow);
+$onerow = mysqli_fetch_row($oneRow);
+
+if (!empty($_SESSION['emailLawyer'])) {
+  $myEmail = $_SESSION['emailLawyer'];
+  $getData = "SELECT * FROM `lawyers` WHERE `email` = '$myEmail'";
+  $successGetData = mysqli_query($connection, $getData);
+  $row = mysqli_fetch_row($successGetData);
+  $auther = $row[1];
+  $imageProfile = $row[9];
+}
+else {
+  $myEmail = $_SESSION['emailAdmin'];
+  $getData = "SELECT * FROM `admin` WHERE `email` = '$myEmail'";
+  $successGetData = mysqli_query($connection, $getData);
+  $row = mysqli_fetch_row($successGetData);
+  $auther = $row[1];
+  $imageProfile = $row[7];
+}
+
+if (isset($_POST['update'])) 
+{
+  $title = $_POST['title'];
+  $description = $_POST['description'];
+
+  if (empty($_FILES['image']['name'])) {
+      $addData = "UPDATE `articales` SET `title`='$title',`description`='$description',`auther`='$auther',`image`='https://tse2.mm.bing.net/th?id=OIP.KHR80cv2s-3ClgkBhEQHZAHaEh&pid=Api&P=0',default,default,`image_profile`='$imageProfile'WHERE `id` = $id";
+  }else {
+      $img_name = time() . $_FILES['image']['name'];
+      $img_temp = $_FILES['image']['tmp_name'];
+      $location = "./uploads/$img_name";
+      move_uploaded_file($img_temp, $location);
+      $addData = "UPDATE `articales` SET `title`='$title',`description`='$description',`auther`='$auther',`image`='$location',default,default,`image_profile`='$imageProfile' WHERE `id` = $id";
+    };
+
+    $successInsert = mysqli_query($connection, $addData);
+    go("/articales/list.php");
+}
+
+?>
+    <div>
+        <div>
+            <div>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group"><img width="200" src="<?= $onerow[4] ?>" class="img-thumbnail"> <input
+                            type="file" name="image"></div>
+                    <div class="form-group ">
+                        <label for="exampleInputEmail1">Title</label>
+                        <input type="text" value="<?= $onerow[1] ?>" class="form-control" name="title"
+                            id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group ">
+                        <label for="exampleInputEmail1">Description</label>
+                        <input type="text" value="<?= $onerow[2] ?>" class="form-control" name="description"
+                            id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" name="update" class="btn btn-info">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php include "../shared/footer.php" ?>
